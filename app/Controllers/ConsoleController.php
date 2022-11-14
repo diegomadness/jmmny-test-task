@@ -20,9 +20,8 @@ class ConsoleController
 
     public function index() : string
     {
-        //todo: write Unit tests /w test doubles
-        $userSilence = $this->silenceService->loadSilenceFromTxt(getenv("USER_FILE_PATH"));
-        $customerSilence = $this->silenceService->loadSilenceFromTxt(getenv("CUSTOMER_FILE_PATH"));
+        $userSilence = $this->silenceService->processSilenceFromTxt(getenv("USER_FILE_PATH"));
+        $customerSilence = $this->silenceService->processSilenceFromTxt(getenv("CUSTOMER_FILE_PATH"));
 
         $userDialog = $this->silenceService->invertSilence($userSilence);
         $customerDialog = $this->silenceService->invertSilence($customerSilence);
@@ -34,11 +33,11 @@ class ConsoleController
             "longest_user_monologue" => $this->dialogService->calcMaxMonologueTime($userDialog),
             "longest_customer_monologue" => $this->dialogService->calcMaxMonologueTime($customerDialog),
             "user_talk_percentage" => $this->dialogService->calcDialogPercentage($userDialog, $totalLength),
-            "user" => [$this->dialogService->presentDialog($userDialog)],
-            "customer" => [$this->dialogService->presentDialog($customerDialog)]
+            "user" => $this->dialogService->presentDialog($userDialog),
+            "customer" => $this->dialogService->presentDialog($customerDialog)
         ];
 
-        //some line breaks for console output
+        //since there is no view engine used - at least have some line breaks for console output
         $output = print_r(json_encode($result), true);
         $output = str_replace(',"', ',' . "\r\n" . '"', $output);
         return $output;

@@ -8,7 +8,7 @@ interface SilenceServiceInterface
      * @param string $path
      * @return array
      */
-    public function loadSilenceFromTxt(string $path): array;
+    public function processSilenceFromTxt(string $path): array;
 
 
     /**
